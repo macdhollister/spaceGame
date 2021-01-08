@@ -3,6 +3,28 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
+def get_player(db: Session, player_id: int):
+    return db.query(models.Player).filter(models.Player.id == player_id).first()
+
+
+def get_player_by_faction(db: Session, faction: str):
+    return db.query(models.Player).filter(models.Player.faction == faction).first()
+
+
+def get_players(db: Session):
+    db.query(models.Player).all()
+
+
+def create_player(db: Session, player: schemas.PlayerCreate):
+    db_player = models.Player(faction=player.faction)
+    db.add(db_player)
+    db.commit()
+    db.refresh(db_player)
+    return db_player
+
+
+# ----- FROM TUTORIAL -----
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
