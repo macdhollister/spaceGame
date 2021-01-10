@@ -7,6 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from src.database import Base
 from src.main import app, get_db
 
+import json
+
 # In memory database
 DATABASE_URL = "sqlite://"
 
@@ -45,6 +47,28 @@ def setup_database():
 
 # -------------------- TESTS --------------------
 
+def test_create_ship(client):
+    client.post("/players/", json={"faction": "faction_1"})
+    response = client.post("/ships/", json={"owner": "faction_1", "modules": "D1"})
+
+    player = client.get("/players/1")
+
+    assert player.json() == {
+        "id": 1,
+        "faction": "faction_1",
+        "is_active": True,
+        # "planets": [],
+        "ships": [{"id": 1, "owner": "faction_1", "modules": "D1"}]
+    }
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": 1,
+        "owner": "faction_1",
+        "modules": "D1"
+    }
+
+
 def test_create_player(client):
     response = client.post(
         "/players/",
@@ -56,4 +80,34 @@ def test_create_player(client):
         "faction": "faction_1",
         "id": 1,
         "is_active": True
+    }
+
+
+def test_create_two_players(client):
+    response_1 = client.post(
+        "/players/",
+        json={"faction": "faction_1"}
+    )
+
+    response_2 = client.post(
+        "/players/",
+        json={"faction": "faction_2"}
+    )
+
+    assert response_1.status_code == 200
+    assert response_2.status_code == 200
+
+    assert response_1.json() == {
+        "faction": "faction_1",
+        "id": 1,
+        "is_active": True,
+        # "planets": [],
+        # "ships": []
+    }
+    assert response_2.json() == {
+        "faction": "faction_2",
+        "id": 2,
+        "is_active": True,
+        # "planets": [],
+        # "ships": []
     }
