@@ -3,24 +3,32 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
+# ----- SHIP -----
+
+class ShipBase(BaseModel):
+    owner: str
+    modules: str
+
+
+class ShipCreate(ShipBase):
+    pass
+
+
+class Ship(ShipBase):
+    id: int
+
+
 # ----- PLANET -----
 
 class Planet(BaseModel):
     id: int
     name: str
     connections: List['Planet'] = []
+    ships: List[Ship] = []
 
 
+# Update forward refs to allow Planet class to self reference
 Planet.update_forward_refs()
-
-
-# ----- SHIP -----
-class Module(BaseModel):
-    pass
-
-
-class Ship(BaseModel):
-    pass
 
 
 # ----- PLAYER -----
@@ -36,41 +44,5 @@ class PlayerCreate(PlayerBase):
 class Player(PlayerBase):
     id: int
     is_active: bool
-    planets: List[Planet] = []
+    # planets: List[Planet] = []
     ships: List[Ship] = []
-
-
-# ----- FROM TUTORIAL -----
-
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
-
-
-class ItemCreate(ItemBase):
-    pass
-
-
-class Item(ItemBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class UserBase(BaseModel):
-    email: str
-
-
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
-    id: int
-    is_active: bool
-    items: List[Item] = []
-
-    class Config:
-        orm_mode = True
