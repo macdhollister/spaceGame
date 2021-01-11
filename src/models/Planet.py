@@ -1,36 +1,7 @@
 from sqlalchemy import Table, Boolean, Column, UniqueConstraint, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from .database import Base
-
-
-class Player(Base):
-    __tablename__ = "players"
-
-    id = Column(Integer, primary_key=True, index=True)
-    faction = Column(String, unique=True, index=True)
-    is_active = Column(Boolean, default=True)
-
-    ships = relationship('Ship', back_populates="owner_relationship")
-    # planets = relationship("Planet", backref="owner")
-
-
-# ----- Ships -----
-
-class Ship(Base):
-    __tablename__ = "ships"
-
-    id = Column(Integer, primary_key=True, index=True)
-    modules = Column(String)
-    owner = Column(String, ForeignKey(Player.faction))
-
-    owner_relationship = relationship('Player', back_populates='ships')
-
-    def __repr__(self):
-        return f'{{"id": "{self.id}","owner": "{self.owner}","modules": "{self.modules}"}}'
-
-
-# ----- Planets -----
+from .Base import Base
 
 connection = Table(
     'PlanetConnection', Base.metadata,
