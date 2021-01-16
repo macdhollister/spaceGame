@@ -2,9 +2,7 @@ from sqlalchemy.orm import Session
 import json
 
 from . import schemas
-from src.models.Player import Player
-from src.models.Ship import Ship
-from src.models.Planet import Planet
+from src.models import *
 
 
 def get_player(db: Session, player_id: int):
@@ -44,3 +42,15 @@ def create_ship(db: Session, ship: schemas.ShipCreate):
     db.commit()
     db.refresh(db_ship)
     return db_ship
+
+
+def submit_turn(db: Session, turn: schemas.Turn):
+    turn = Turn(
+        faction=turn.faction,
+        turn_number=turn.turn_number,
+        orders=turn.orders
+    )
+    db.add(turn)
+    db.commit()
+    db.refresh(turn)
+    return turn

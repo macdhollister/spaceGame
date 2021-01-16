@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from pydantic import BaseModel
 
@@ -16,6 +16,14 @@ class ShipCreate(ShipBase):
 
 class Ship(ShipBase):
     id: int
+
+
+# ----- TURN -----
+
+class Turn(BaseModel):
+    faction: str
+    turn_number: int
+    orders: str
 
 
 # ----- PLANET -----
@@ -44,5 +52,5 @@ class PlayerCreate(PlayerBase):
 class Player(PlayerBase):
     id: int
     is_active: bool
-    # planets: List[Planet] = []
     ships: List[Ship] = []
+    turns: List[Turn] = []
