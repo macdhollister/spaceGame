@@ -1,13 +1,13 @@
+import json
+
 import pytest
 from fastapi.testclient import TestClient
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from src.main import app
 from src.models.Base import Base
-from src.main import app, get_db
-
-import json
+from src.routes.utils import get_db
 
 # In memory database
 DATABASE_URL = "sqlite://"
@@ -47,6 +47,24 @@ def setup_database():
 
 # -------------------- TESTS --------------------
 
+def test_submit_turn(client):
+    client.post("/players/", json={"faction": "faction_1"})
+
+    response = client.post("/turns/", json={
+        "faction": "faction_1",
+        "turn_number": 1,
+        "orders": json.dumps({
+            "test": "orders_json"
+        })
+    })
+
+    assert response.json() == {
+        "faction": "faction_1",
+        "turn_number": 1,
+        "orders": '{"test": "orders_json"}'
+    }
+
+
 def test_create_ship(client):
     client.post("/players/", json={"faction": "faction_1"})
     response = client.post("/ships/", json={"owner": "faction_1", "modules": "D1"})
@@ -57,8 +75,8 @@ def test_create_ship(client):
         "id": 1,
         "faction": "faction_1",
         "is_active": True,
-        # "planets": [],
-        "ships": [{"id": 1, "owner": "faction_1", "modules": "D1"}]
+        "ships": [{"id": 1, "owner": "faction_1", "modules": "D1"}],
+        "turns": []
     }
 
     assert response.status_code == 200
@@ -100,14 +118,10 @@ def test_create_two_players(client):
     assert response_1.json() == {
         "faction": "faction_1",
         "id": 1,
-        "is_active": True,
-        # "planets": [],
-        # "ships": []
+        "is_active": True
     }
     assert response_2.json() == {
         "faction": "faction_2",
         "id": 2,
-        "is_active": True,
-        # "planets": [],
-        # "ships": []
+        "is_active": True
     }
