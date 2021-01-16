@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Boolean, Column, UniqueConstraint, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from .Base import Base
@@ -12,4 +12,4 @@ class Player(Base):
     is_active = Column(Boolean, default=True)
 
     ships = relationship('Ship', back_populates="owner_relationship")
-    # planets = relationship("Planet", backref="owner")
+    turns = relationship('Turn', back_populates="player_relationship")
