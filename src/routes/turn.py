@@ -16,7 +16,8 @@ def submit_turn(turn: schemas.Turn, db: Session = Depends(get_db)):
     if db_owner is None:
         raise HTTPException(status_code=404, detail="Player not found")
     return crud.submit_turn(db, turn)
-    # TODO Figure out inputs
+    # TODO
+    #   get current state of game
     #   validate turn
     #   validation fails:
     #       kick back to player
