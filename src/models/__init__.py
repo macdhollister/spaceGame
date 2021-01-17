@@ -1,8 +1,4 @@
-from . import Base
-from . import Planet
-from . import Player
-from . import Ship
-from . import Turn
+from . import Base, Planet, Player, Ship, Turn
 
 Base = Base.Base
 Planet = Planet.Planet

@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src import crud
+from src.crud.planet import build_map
 from src.models.Base import Base
 
 # In memory database
@@ -58,7 +58,7 @@ def test_build_map(db):
         }
     ]
 
-    game_map = crud.build_map(db, planets)
+    game_map = build_map(db, planets)
 
     assert game_map[0].name == 'planet_a'
     assert game_map[1].name == 'planet_b'
