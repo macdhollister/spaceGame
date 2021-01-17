@@ -28,9 +28,16 @@ class Turn(BaseModel):
 
 # ----- PLANET -----
 
-class Planet(BaseModel):
-    id: int
+class PlanetBase(BaseModel):
+    pass
+
+
+class PlanetCreate(PlanetBase):
     name: str
+
+
+class Planet(PlanetBase):
+    id: int
     connections: List['Planet'] = []
     ships: List[Ship] = []
 
