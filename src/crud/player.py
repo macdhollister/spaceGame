@@ -2,12 +2,12 @@ import json
 
 from sqlalchemy.orm import Session
 
+from src import models
 from src import schemas
-from src.models import *
 
 
 def get_player(db: Session, player_id: int):
-    db_player = db.query(Player).filter(Player.id == player_id).first()
+    db_player = db.query(models.Player).filter(models.Player.id == player_id).first()
 
     ships = []
     for ship in db_player.ships:
@@ -22,15 +22,15 @@ def get_player(db: Session, player_id: int):
 
 
 def get_player_by_faction(db: Session, faction: str):
-    return db.query(Player).filter(Player.faction == faction).first()
+    return db.query(models.Player).filter(models.Player.faction == faction).first()
 
 
 def get_players(db: Session):
-    return db.query(Player).all()
+    return db.query(models.Player).all()
 
 
 def create_player(db: Session, player: schemas.PlayerCreate):
-    db_player = Player(faction=player.faction)
+    db_player = models.Player(faction=player.faction)
     db.add(db_player)
     db.commit()
     db.refresh(db_player)
@@ -38,7 +38,7 @@ def create_player(db: Session, player: schemas.PlayerCreate):
 
 
 def submit_turn(db: Session, turn: schemas.Turn):
-    turn = Turn(
+    turn = models.Turn(
         faction=turn.faction,
         turn_number=turn.turn_number,
         orders=turn.orders
