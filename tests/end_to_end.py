@@ -48,7 +48,7 @@ def setup_database():
 # -------------------- TESTS --------------------
 
 def test_submit_turn(client):
-    client.post("/players/", json={"faction": "faction_1"})
+    client.post("/factions/", json={"faction": "faction_1"})
 
     response = client.post("/turns/", json={
         "faction": "faction_1",
@@ -66,12 +66,12 @@ def test_submit_turn(client):
 
 
 def test_create_ship(client):
-    client.post("/players/", json={"faction": "faction_1"})
+    client.post("/factions/", json={"faction": "faction_1"})
     response = client.post("/ships/", json={"owner": "faction_1", "modules": "D1"})
 
-    player = client.get("/players/1")
+    faction = client.get("/factions/1")
 
-    assert player.json() == {
+    assert faction.json() == {
         "id": 1,
         "faction": "faction_1",
         "is_active": True,
@@ -87,9 +87,9 @@ def test_create_ship(client):
     }
 
 
-def test_create_player(client):
+def test_create_faction(client):
     response = client.post(
-        "/players/",
+        "/factions/",
         json={"faction": "faction_1"}
     )
 
@@ -101,14 +101,14 @@ def test_create_player(client):
     }
 
 
-def test_create_two_players(client):
+def test_create_two_factions(client):
     response_1 = client.post(
-        "/players/",
+        "/factions/",
         json={"faction": "faction_1"}
     )
 
     response_2 = client.post(
-        "/players/",
+        "/factions/",
         json={"faction": "faction_2"}
     )
 

@@ -1,7 +1,7 @@
-from . import Base, Planet, Player, Ship, Turn
+from . import Base, Planet, Ship, Turn, Faction
 
 Base = Base.Base
 Planet = Planet.Planet
-Player = Player.Player
+Faction = Faction.Faction
 Ship = Ship.Ship
 Turn = Turn.Turn

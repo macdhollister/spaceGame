@@ -2,14 +2,14 @@ from sqlalchemy import String, Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from .Base import Base
-from .Player import Player
+from .Faction import Faction
 
 
 class Turn(Base):
     __tablename__ = "turns"
 
-    faction = Column(String, ForeignKey(Player.faction), primary_key=True)
+    faction = Column(String, ForeignKey(Faction.faction), primary_key=True)
     turn_number = Column(Integer, primary_key=True)
     orders = Column(String)
 
-    player_relationship = relationship('Player', back_populates="turns")
+    faction_relationship = relationship(Faction, back_populates="turns")

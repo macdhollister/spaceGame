@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.crud.planet import build_map
 from src.models.Base import Base
-from tests.fixtures import planets_without_players as planets
+from tests.fixtures import planets_without_factions as planets
 
 # In memory database
 DATABASE_URL = "sqlite://"

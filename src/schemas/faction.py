@@ -6,15 +6,15 @@ from src.schemas.ship import Ship
 from src.schemas.turn import Turn
 
 
-class PlayerBase(BaseModel):
+class FactionBase(BaseModel):
     faction: str
 
 
-class PlayerCreate(PlayerBase):
+class FactionCreate(FactionBase):
     pass
 
 
-class Player(PlayerBase):
+class Faction(FactionBase):
     id: int
     is_active: bool
     ships: List[Ship] = []

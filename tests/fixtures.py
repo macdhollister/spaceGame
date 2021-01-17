@@ -1,4 +1,4 @@
-planets_without_players = [
+planets_without_factions = [
         {
             'name': 'planet_a',
             'size': 's',
