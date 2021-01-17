@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.crud.planet import build_map
 from src.models.Base import Base
+from tests.fixtures import planets_without_players as planets
 
 # In memory database
 DATABASE_URL = "sqlite://"
@@ -31,33 +32,6 @@ def db():
 # -------------------- TESTS --------------------
 
 def test_build_map(db):
-    planets = [
-        {
-            'name': 'planet_a',
-            'size': 's',
-            'resources': 4,
-            'owner': None,
-            'facilities': [],
-            'connections': ['planet_b', 'planet_c']
-        },
-        {
-            'name': 'planet_b',
-            'size': 'm',
-            'resources': 3,
-            'owner': None,
-            'facilities': [],
-            'connections': ['planet_a', 'planet_c']
-        },
-        {
-            'name': 'planet_c',
-            'size': 'l',
-            'resources': 2,
-            'owner': None,
-            'facilities': [],
-            'connections': ['planet_a', 'planet_b']
-        }
-    ]
-
     game_map = build_map(db, planets)
 
     assert game_map[0].name == 'planet_a'
