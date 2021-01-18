@@ -35,15 +35,3 @@ def create_faction(db: Session, faction: schemas.FactionCreate):
     db.commit()
     db.refresh(db_faction)
     return db_faction
-
-
-def submit_turn(db: Session, turn: schemas.Turn):
-    turn = models.Turn(
-        faction=turn.faction,
-        turn_number=turn.turn_number,
-        orders=turn.orders
-    )
-    db.add(turn)
-    db.commit()
-    db.refresh(turn)
-    return turn
