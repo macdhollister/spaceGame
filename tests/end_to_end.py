@@ -65,6 +65,32 @@ def test_submit_turn(client):
     }
 
 
+def test_submit_turn_early(client):
+    client.post("/factions/", json={"faction": "faction_1"})
+    client.post("/factions/", json={"faction": "faction_2"})
+
+    client.post("/turns/", json={
+        "faction": "faction_1",
+        "turn_number": 1,
+        "orders": json.dumps({
+            "test": "first turn orders"
+        })
+    })
+
+    # Post should fail because faction_2 hasn't posted turn 1
+    response = client.post("/turns/", json={
+        "faction": "faction_1",
+        "turn_number": 2,
+        "orders": json.dumps({
+            "test": "second turn orders"
+        })
+    })
+
+    assert response.json() == {
+        "errors": ["You may not submit a turn until all players have submitted."]
+    }
+
+
 def test_create_ship(client):
     client.post("/factions/", json={"faction": "faction_1"})
     response = client.post("/ships/", json={"owner": "faction_1", "modules": "D1"})
