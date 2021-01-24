@@ -61,6 +61,7 @@ def test_submit_turn(client):
     assert response.json() == {
         "faction": "faction_1",
         "turn_number": 1,
+        "initiative": 0,
         "orders": '{"test": "orders_json"}'
     }
 
